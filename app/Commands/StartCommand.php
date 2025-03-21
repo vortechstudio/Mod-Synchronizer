@@ -30,7 +30,7 @@ class StartCommand extends Command
     {
         if(!$this->option('without-config')) {
             $this->call('updater');
-            //$this->call("initialize");
+            $this->call('config:verify');
         }
 
         $menuSelect = select(
@@ -39,10 +39,17 @@ class StartCommand extends Command
                 "link" => "Lié deux dossiers",
                 "sync" => "Synchroniser un dossier de travail",
                 "config" => "Configuration",
+                "help" => "Aide",
                 "exit" => "Quitter"
             ]
         );
 
-
+        match($menuSelect) {
+            "link" => $this->call('link'),
+            "sync" => $this->call('sync'),
+            "config" => $this->call('config:edit'),
+            "help" => $this->call('help'),
+            "exit" => $this->call('exit'),
+        };
     }
 }
